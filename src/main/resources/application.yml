@@ -109,7 +109,7 @@ constant:
   # 镜像名
   dockerRepository: "fiscoorg/fisco-webase"
   # WeBASE-Sign 访问地址，供节点前置访问，不能填写localhost或127.0.0.1
-  webaseSignAddress: "119.45.242.41:5004"
+  webaseSignAddress: "127.0.0.1:5004"
   # 可视化操作的后台超时时间 (unit: ms)，若机器较慢，可动态设置超时时间
   execDockerCheckTimeout: 55000
   execHostCheckTimeout: 55000
