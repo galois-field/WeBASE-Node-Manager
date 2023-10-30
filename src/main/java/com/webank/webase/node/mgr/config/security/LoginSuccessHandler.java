@@ -52,6 +52,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         //delete old token and save new
         tokenService.deleteToken(null, accountName);
         String token = tokenService.createToken(accountName, 1);
+        // access token save db
+        if (null != request.getParameter("access_token")){
+            String accessToken = request.getParameter("access_token");
+            tokenService.updateAccessToken(token, accessToken);
+        }
 
         // response account info
         TbAccountInfo accountInfo = accountService.queryByAccount(accountName);

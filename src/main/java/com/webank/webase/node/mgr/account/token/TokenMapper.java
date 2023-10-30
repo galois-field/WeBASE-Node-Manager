@@ -32,4 +32,6 @@ public interface TokenMapper {
     void update(@Param("token") String token, @Param("expireTime") LocalDateTime expireTime);
 
     TbToken query(@Param("token") String token);
+
+    void updateAccessToken(@Param("token") String token, @Param("accessToken") String accessToken);
 }

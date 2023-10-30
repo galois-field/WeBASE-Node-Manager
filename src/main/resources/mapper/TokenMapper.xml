@@ -7,6 +7,7 @@
     <resultMap id="accountMap" type="com.webank.webase.node.mgr.account.token.TbToken">
         <id column="token" javaType="java.lang.String" jdbcType="VARCHAR" property="token"/>
         <id column="value" javaType="java.lang.String" jdbcType="VARCHAR" property="value"/>
+        <id column="access_token" javaType="java.lang.String" jdbcType="VARCHAR" property="accessToken"/>
         <result column="expire_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" property="expireTime"/>
         <result column="create_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
@@ -14,6 +15,10 @@
     <insert id="add" parameterType="com.webank.webase.node.mgr.account.token.TbToken">
          insert into tb_token (token,value,expire_time,create_time)values(#{token},#{value},#{expireTime},now())
    </insert>
+
+    <update id="updateAccessToken" parameterType="com.webank.webase.node.mgr.account.token.TbToken">
+        update tb_token set access_token = #{accessToken} where token = #{token}
+    </update>
 
     <delete id="delete" parameterType="java.lang.String">
 		 delete from tb_token where expire_time &lt;= NOW()

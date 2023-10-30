@@ -74,8 +74,7 @@ public class ValidateCodeFilter implements Filter {
         //is login
         if (LOGIN_URI.equalsIgnoreCase(uri) && LOGIN_METHOD.equalsIgnoreCase(req.getMethod())) {
             try {
-//                validateCode(req);
-                validateCodeByQH(req);
+                validateCode(req);
             } catch (NodeMgrException ex) {
                 NodeMgrTools.responseRetCodeException(rsp, ex.getRetCode());
                 return;
@@ -108,35 +107,6 @@ public class ValidateCodeFilter implements Filter {
                 codeInRequest);
             throw new NodeMgrException(ConstantCode.INVALID_CHECK_CODE);
         }
-    }
-
-
-    /**
-     *  verify code by qing hai
-     */
-    private void validateCodeByQH(HttpServletRequest request) throws JsonProcessingException {
-
-        // 请求校验Token地址
-        String accessTokenUrl = "http://122.190.56.35:31575/ns-design/oauth2/query_access_token";
-        // 获取请求头的Token
-        String tokenInHeader = request.getHeader("token");
-        // 拼接请求地址
-        String fullUrl = accessTokenUrl + "?access_token=" + tokenInHeader;
-
-        // 处理请求
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(fullUrl, HttpMethod.GET, null, String.class);
-        if (response.getStatusCodeValue() == 200){
-            String responseBody = response.getBody();
-            JsonNode jsonResponse = objectMapper.readTree(responseBody);
-            int code = jsonResponse.get("code").asInt();
-            if (code != 1){
-                throw new NodeMgrException(ConstantCode.INVALID_TOKEN);
-            }
-        }else {
-            throw new NodeMgrException(ConstantCode.FAILED_TO_GET_QH_TOKEN);
-        }
-
     }
 
 

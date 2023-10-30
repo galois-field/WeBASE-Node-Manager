@@ -15,6 +15,7 @@
  */
 package com.webank.webase.node.mgr.config.security;
 
+import com.webank.webase.node.mgr.account.entity.AccountInfo;
 import com.webank.webase.node.mgr.tools.JsonTools;
 import com.webank.webase.node.mgr.account.AccountService;
 import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
@@ -51,7 +52,14 @@ public class AccountDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.DB_EXCEPTION));
         }
         if (null == accountRow) {
-            throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.INVALID_ACCOUNT_NAME));
+//            throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.INVALID_ACCOUNT_NAME));
+            // 注册用户
+            AccountInfo accountInfo = new AccountInfo();
+            accountInfo.setAccount(account);
+            String password = account + "123456!";
+            accountInfo.setAccountPwd(password);
+            accountService.addAccountRow(accountInfo);
+            accountRow = accountService.queryByAccount(account);
         }
 
         // add role
