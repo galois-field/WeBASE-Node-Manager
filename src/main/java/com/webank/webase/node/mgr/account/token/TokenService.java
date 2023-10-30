@@ -66,6 +66,7 @@ public class TokenService {
         TbToken tbToken = new TbToken();
         tbToken.setToken(token);
         tbToken.setValue(value);
+        tbToken.setAccessToken("");
         if (type == TokenType.USER.getValue()) {
             tbToken.setExpireTime(LocalDateTime.now().plusSeconds(properties.getAuthTokenMaxAge()));
         } else if (type == TokenType.VERIFICATIONCODE.getValue()) {
