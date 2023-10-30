@@ -74,7 +74,7 @@ public class ValidateCodeFilter implements Filter {
         //is login
         if (LOGIN_URI.equalsIgnoreCase(uri) && LOGIN_METHOD.equalsIgnoreCase(req.getMethod())) {
             try {
-                validateCode(req);
+//                validateCode(req);
             } catch (NodeMgrException ex) {
                 NodeMgrTools.responseRetCodeException(rsp, ex.getRetCode());
                 return;

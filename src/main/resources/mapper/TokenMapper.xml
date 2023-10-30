@@ -13,7 +13,7 @@
     </resultMap>
 
     <insert id="add" parameterType="com.webank.webase.node.mgr.account.token.TbToken">
-         insert into tb_token (token,value,expire_time,create_time)values(#{token},#{value},#{expireTime},now())
+         insert into tb_token (token,value,access_token,expire_time,create_time)values(#{token},#{value},#{accessToken},#{expireTime},now())
    </insert>
 
     <update id="updateAccessToken" parameterType="com.webank.webase.node.mgr.account.token.TbToken">
