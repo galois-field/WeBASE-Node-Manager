@@ -15,10 +15,12 @@
  */
 package com.webank.webase.node.mgr.config.security.customizeAuth;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import com.webank.webase.node.mgr.account.AccountService;
+import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
+import com.webank.webase.node.mgr.account.token.TokenService;
+import com.webank.webase.node.mgr.base.code.ConstantCode;
+import com.webank.webase.node.mgr.base.exception.NodeMgrException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,11 +29,11 @@ import org.springframework.security.authentication.CredentialsExpiredException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import com.webank.webase.node.mgr.account.AccountService;
-import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
-import com.webank.webase.node.mgr.base.exception.NodeMgrException;
-import com.webank.webase.node.mgr.account.token.TokenService;
-import lombok.extern.log4j.Log4j2;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @Log4j2
 public class TokenAuthenticationProvider implements AuthenticationProvider {
@@ -43,19 +45,38 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+
         String token = authentication.getName();
+        log.warn("🐕token"+token);
         String account = null;
+        String accessToken = null;
+        Integer code = 0;
         try {
             account = tokenService.getValueFromToken(token);
+            accessToken = tokenService.getAccessTokenFromToken(token);
+            if (!tokenService.verifyCodeByQH(accessToken)){
+                log.warn("fail getValueFromToken. access token external service verification failed:{}", accessToken);
+                //delete token
+                tokenService.deleteToken(token, null);
+                throw new NodeMgrException(ConstantCode.INVALID_ACCESS_TOKEN);
+            }
+            log.warn("🐕account"+account);
             tokenService.updateExpireTime(token);
-        } catch (NodeMgrException e) {
-            throw e;
-        } catch (Exception e) {
+        }catch (NodeMgrException e){
+            if (e.getRetCode().getCode() == ConstantCode.INVALID_ACCESS_TOKEN.getCode()){
+                code = e.getRetCode().getCode();
+                throw new BadCredentialsException(code.toString());
+            }else{
+                throw e;
+            }
+        }
+        catch (Exception e) {
             throw new BadCredentialsException("db");
         }
         if (null == account) {
             throw new CredentialsExpiredException("Invalid token");
         }
+
         AbstractAuthenticationToken result = buildAuthentication(account);
         result.setDetails(authentication.getDetails());
         return result;

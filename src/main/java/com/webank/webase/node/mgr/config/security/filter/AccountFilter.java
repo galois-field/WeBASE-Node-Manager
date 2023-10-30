@@ -19,16 +19,19 @@ import com.webank.webase.node.mgr.base.annotation.entity.CurrentAccountInfo;
 import com.webank.webase.node.mgr.base.code.ConstantCode;
 import com.webank.webase.node.mgr.base.exception.NodeMgrException;
 import com.webank.webase.node.mgr.config.properties.ConstantProperties;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * validate account info.
  */
 @Component
+@Log4j2
 public class AccountFilter implements HandlerInterceptor {
 
     @Autowired
@@ -38,7 +41,14 @@ public class AccountFilter implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-            Object handler) {
+            Object handler) throws Exception {
+
+
+//        if (request.getRequestURI().equals("/WeBASE-Node-Manager/error")){
+            log.warn("🐕uri"+request.getRequestURI());
+//            return true;
+//        }
+
         // 获取账户信息
         String account = accountService.getCurrentAccount(request);
         TbAccountInfo accountRow = accountService.queryByAccount(account);

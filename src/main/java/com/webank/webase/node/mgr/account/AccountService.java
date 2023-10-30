@@ -15,20 +15,18 @@
  */
 package com.webank.webase.node.mgr.account;
 
-import com.webank.webase.node.mgr.config.properties.ConstantProperties;
-import com.webank.webase.node.mgr.tools.JsonTools;
-import com.webank.webase.node.mgr.tools.NodeMgrTools;
 import com.webank.webase.node.mgr.account.entity.AccountInfo;
 import com.webank.webase.node.mgr.account.entity.AccountListParam;
 import com.webank.webase.node.mgr.account.entity.LoginInfo;
 import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
+import com.webank.webase.node.mgr.account.role.RoleService;
+import com.webank.webase.node.mgr.account.token.TokenService;
 import com.webank.webase.node.mgr.base.code.ConstantCode;
 import com.webank.webase.node.mgr.base.enums.AccountStatus;
 import com.webank.webase.node.mgr.base.exception.NodeMgrException;
-import com.webank.webase.node.mgr.account.role.RoleService;
-import com.webank.webase.node.mgr.account.token.TokenService;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+import com.webank.webase.node.mgr.config.properties.ConstantProperties;
+import com.webank.webase.node.mgr.tools.JsonTools;
+import com.webank.webase.node.mgr.tools.NodeMgrTools;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +34,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * services for account data.
@@ -271,7 +272,7 @@ public class AccountService {
      * @case1: get account info from request's header, such as account of admin001
      * @case2: get account from token, use token to get account, such as 0x001 to get its account of admin001
      */
-    public String getCurrentAccount(HttpServletRequest request) {
+    public String getCurrentAccount(HttpServletRequest request){
         if (!constants.getIsUseSecurity()) {
             String accountDefault = NodeMgrTools.getAccount(request);
             if (StringUtils.isNotBlank(accountDefault)) {

@@ -25,5 +25,5 @@ public class TbToken {
     private String value;
     private LocalDateTime expireTime;
     private LocalDateTime createTime;
-    private String AccessToken;
+    private String accessToken;
 }

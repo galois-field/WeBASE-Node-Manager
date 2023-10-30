@@ -120,9 +120,10 @@ public class ConstantCode {
     public static final RetCode SERVER_CONNECT_FAIL = RetCode
             .mark(202051, "wrong host ip or wrong port: connect failed");
     public static final RetCode INVALID_TOKEN = RetCode.mark(202052, "invalid token");
-    public static final RetCode INVALID_ACCESS_TOKEN = RetCode.mark(202052, "invalid access token");
-    public static final RetCode ACCESS_TOKEN_IS_NULL = RetCode.mark(202052, "access token is required");
     public static final RetCode TOKEN_EXPIRE = RetCode.mark(202053, "token expire");
+    public static final RetCode ACCESS_TOKEN_HANDLE_FAIL = RetCode.mark(202054, "access token handle fail");
+    public static final RetCode INVALID_ACCESS_TOKEN = RetCode.mark(202055, "invalid access token");
+    public static final RetCode ACCESS_TOKEN_IS_NULL = RetCode.mark(202056, "access token is required");
 
     public static final RetCode AVAILABLE_FRONT_URL_IS_NULL = RetCode.mark(202054, "Available front url is empty, check front status");
 

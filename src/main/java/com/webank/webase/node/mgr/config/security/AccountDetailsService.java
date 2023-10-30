@@ -15,13 +15,13 @@
  */
 package com.webank.webase.node.mgr.config.security;
 
-import com.webank.webase.node.mgr.account.entity.AccountInfo;
-import com.webank.webase.node.mgr.tools.JsonTools;
 import com.webank.webase.node.mgr.account.AccountService;
+import com.webank.webase.node.mgr.account.entity.AccountInfo;
 import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
 import com.webank.webase.node.mgr.base.code.ConstantCode;
-import java.util.ArrayList;
-import java.util.List;
+import com.webank.webase.node.mgr.tools.JsonTools;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,10 +32,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * config acccount and role.
  */
 @Service
+@Log4j2
 public class AccountDetailsService implements UserDetailsService {
 
     @Autowired
@@ -44,29 +48,40 @@ public class AccountDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String account) throws UsernameNotFoundException {
+
+        log.warn("🐕 account"+account);
         // query account
         TbAccountInfo accountRow = null;
         try {
             accountRow = accountService.queryByAccount(account);
+            log.warn("🐕账号找到了吗？"+accountRow);
+        }catch (Exception e){
+            log.warn("🐕账号找到了吗？"+e);
+        }
+
+        try {
+            if (null == accountRow) {
+                // 注册用户
+                AccountInfo accountInfo = new AccountInfo();
+                accountInfo.setAccount(account);
+                String encodePassword = DigestUtils.sha256Hex(account);
+                accountInfo.setAccountPwd(encodePassword);
+                accountInfo.setRoleId(100001);
+                accountService.addAccountRow(accountInfo);
+                accountRow = accountService.queryByAccount(account);
+            }
         } catch (Exception e) {
             throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.DB_EXCEPTION));
         }
-        if (null == accountRow) {
-//            throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.INVALID_ACCOUNT_NAME));
-            // 注册用户
-            AccountInfo accountInfo = new AccountInfo();
-            accountInfo.setAccount(account);
-            String password = account + "123456!";
-            accountInfo.setAccountPwd(password);
-            accountService.addAccountRow(accountInfo);
-            accountRow = accountService.queryByAccount(account);
-        }
 
+        log.warn("1🐕");
         // add role
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
         list.add(new SimpleGrantedAuthority("ROLE_" + accountRow.getRoleName()));
-
         User authUser = new User(account, accountRow.getAccountPwd(), list);
+        log.warn("1🐕authUser："+authUser.getUsername());
+        log.warn("2🐕authUser："+authUser.getPassword());
+        log.warn("3🐕authUser："+authUser.getAuthorities().toString());
         return authUser;
     }
 }

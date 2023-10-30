@@ -15,11 +15,9 @@
  */
 package com.webank.webase.node.mgr.config.security.filter;
 
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.webank.webase.node.mgr.base.code.ConstantCode;
+import com.webank.webase.node.mgr.base.code.RetCode;
+import com.webank.webase.node.mgr.tools.NodeMgrTools;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationDetailsSource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +26,12 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.webank.webase.node.mgr.tools.NodeMgrTools;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 import static com.webank.webase.node.mgr.tools.NodeMgrTools.TOKEN_HEADER_NAME;
 
@@ -61,10 +64,17 @@ public abstract class AbstractAuthenticationFilter extends OncePerRequestFilter 
         try {
             authResult = authenticationManager.authenticate(authRequest);
         } catch (AuthenticationException failed) {
-            String errorMessage = failed.getMessage();
+
+
+            String code = failed.getMessage();
+            int resCode = Integer.parseInt(code);
             SecurityContextHolder.clearContext();
-            //response exception
-            NodeMgrTools.responseString(response, errorMessage);
+
+            if (resCode== ConstantCode.INVALID_ACCESS_TOKEN.getCode()){
+                NodeMgrTools.responseRetCodeException(response, RetCode.mark(resCode,"invalid access token"));
+            }else {
+                NodeMgrTools.responseString(response,failed.getMessage());
+            }
             return;
         }
 

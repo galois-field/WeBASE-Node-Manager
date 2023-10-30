@@ -13,33 +13,21 @@
  */
 package com.webank.webase.node.mgr.config.security.filter;
 
-import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
+import com.webank.webase.node.mgr.account.token.TokenService;
+import com.webank.webase.node.mgr.base.code.ConstantCode;
+import com.webank.webase.node.mgr.base.exception.NodeMgrException;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import com.webank.webase.node.mgr.base.code.ConstantCode;
-import com.webank.webase.node.mgr.base.exception.NodeMgrException;
-import com.webank.webase.node.mgr.tools.HttpRequestTools;
-import com.webank.webase.node.mgr.tools.NodeMgrTools;
-import com.webank.webase.node.mgr.account.token.TokenService;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 /**
@@ -68,21 +56,21 @@ public class ValidateCodeFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
         throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse rsp = (HttpServletResponse) response;
-        String uri = HttpRequestTools.getUri(req);
-        //is login
-        if (LOGIN_URI.equalsIgnoreCase(uri) && LOGIN_METHOD.equalsIgnoreCase(req.getMethod())) {
-            try {
-//                validateCode(req);
-            } catch (NodeMgrException ex) {
-                NodeMgrTools.responseRetCodeException(rsp, ex.getRetCode());
-                return;
-            } finally {
-                //remove token
-                tokenService.deleteToken(req.getHeader("token"), null);
-            }
-        }
+//        HttpServletRequest req = (HttpServletRequest) request;
+//        HttpServletResponse rsp = (HttpServletResponse) response;
+//        String uri = HttpRequestTools.getUri(req);
+//        //is login
+//        if (LOGIN_URI.equalsIgnoreCase(uri) && LOGIN_METHOD.equalsIgnoreCase(req.getMethod())) {
+//            try {
+////                validateCode(req);
+//            } catch (NodeMgrException ex) {
+//                NodeMgrTools.responseRetCodeException(rsp, ex.getRetCode());
+//                return;
+//            } finally {
+//                //remove token
+//                tokenService.deleteToken(req.getHeader("token"), null);
+//            }
+//        }
         chain.doFilter(request, response);
     }
 
@@ -90,7 +78,7 @@ public class ValidateCodeFilter implements Filter {
     /**
      * verify code.
      */
-    private void validateCode(HttpServletRequest request) {
+    private void validateCode(HttpServletRequest request) throws Exception {
         String tokenInHeard = request.getHeader("token");
         String codeInRequest = request.getParameter("checkCode");
         log.info("validateCode. tokenInHeard:{} codeInRequest:{}", tokenInHeard, codeInRequest);
@@ -103,6 +91,7 @@ public class ValidateCodeFilter implements Filter {
         }
         String code = tokenService.getValueFromToken(tokenInHeard);
         if (!codeInRequest.equalsIgnoreCase(code)) {
+
             log.warn("fail validateCode. realCheckCode:{} codeInRequest:{}", code,
                 codeInRequest);
             throw new NodeMgrException(ConstantCode.INVALID_CHECK_CODE);
