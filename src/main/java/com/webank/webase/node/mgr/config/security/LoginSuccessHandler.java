@@ -61,6 +61,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 throw new NodeMgrException(ConstantCode.INVALID_ACCESS_TOKEN);
             }
             tokenService.updateAccessToken(token, accessToken);
+        }else {
+            throw new NodeMgrException(ConstantCode.ACCESS_TOKEN_IS_NULL);
         }
 
         // response account info
