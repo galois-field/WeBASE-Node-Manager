@@ -112,7 +112,7 @@ public class TokenService {
     /**
      *  verify code by qing hai
      */
-    private boolean verifyCodeByQH(String accessToken) throws JsonProcessingException {
+    public boolean verifyCodeByQH(String accessToken) throws JsonProcessingException {
 
         // 请求校验Token地址
         String accessTokenUrl = "http://122.190.56.35:31575/ns-design/oauth2/query_access_token";

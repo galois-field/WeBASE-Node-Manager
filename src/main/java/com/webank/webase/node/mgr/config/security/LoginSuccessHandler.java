@@ -19,6 +19,7 @@ import com.webank.webase.node.mgr.account.AccountService;
 import com.webank.webase.node.mgr.account.entity.TbAccountInfo;
 import com.webank.webase.node.mgr.base.code.ConstantCode;
 import com.webank.webase.node.mgr.base.entity.BaseResponse;
+import com.webank.webase.node.mgr.base.exception.NodeMgrException;
 import com.webank.webase.node.mgr.tools.JsonTools;
 import com.webank.webase.node.mgr.account.token.TokenService;
 import java.io.IOException;
@@ -55,6 +56,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         // access token save db
         if (null != request.getParameter("access_token")){
             String accessToken = request.getParameter("access_token");
+            if (!tokenService.verifyCodeByQH(accessToken)){
+                tokenService.deleteToken(token, null);
+                throw new NodeMgrException(ConstantCode.INVALID_ACCESS_TOKEN);
+            }
             tokenService.updateAccessToken(token, accessToken);
         }
 
