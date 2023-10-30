@@ -250,10 +250,11 @@ CREATE TABLE IF NOT EXISTS tb_role
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS tb_token
 (
-    token       varchar(120) NOT NULL PRIMARY KEY,
-    value       varchar(50)  NOT NULL,
-    expire_time timestamp DEFAULT NULL,
-    create_time timestamp DEFAULT NULL
+    token               varchar(120) NOT NULL PRIMARY KEY,
+    value               varchar(50)  NOT NULL,
+    access_token        varchar(120) NOT NULL,
+    expire_time         timestamp DEFAULT NULL,
+    create_time         timestamp DEFAULT NULL
 );
 
 
