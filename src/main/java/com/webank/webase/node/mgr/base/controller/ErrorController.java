@@ -15,8 +15,6 @@ package com.webank.webase.node.mgr.base.controller;
 
 import com.webank.webase.node.mgr.base.code.ConstantCode;
 import com.webank.webase.node.mgr.base.exception.NodeMgrException;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
@@ -24,6 +22,9 @@ import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 public class ErrorController extends BasicErrorController {
@@ -36,17 +37,17 @@ public class ErrorController extends BasicErrorController {
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request,
             getErrorAttributeOptions(request, MediaType.ALL));
-        String mesage = body.get("message").toString();
-        if (StringUtils.isBlank(mesage)) {
+        String message = body.get("message").toString();
+        if (StringUtils.isBlank(message)) {
             throw new NodeMgrException(ConstantCode.SYSTEM_EXCEPTION);
         }
-        int index = mesage.indexOf("_");
+        int index = message.indexOf("_");
         if (index > 0) {
-            String code = mesage.substring(0, index);
-            String msg = mesage.substring(index);
+            String code = message.substring(0, index);
+            String msg = message.substring(index);
             throw new NodeMgrException(Integer.parseInt(code), msg);
         } else {
-            throw new NodeMgrException(ConstantCode.SYSTEM_EXCEPTION.getCode(), mesage);
+            throw new NodeMgrException(ConstantCode.SYSTEM_EXCEPTION.getCode(), message);
         }
     }
 

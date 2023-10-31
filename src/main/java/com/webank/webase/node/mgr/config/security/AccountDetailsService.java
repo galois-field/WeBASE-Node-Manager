@@ -66,7 +66,7 @@ public class AccountDetailsService implements UserDetailsService {
                 accountInfo.setAccount(account);
                 String encodePassword = DigestUtils.sha256Hex(account);
                 accountInfo.setAccountPwd(encodePassword);
-                accountInfo.setRoleId(100001);
+                accountInfo.setRoleId(100000);
                 accountService.addAccountRow(accountInfo);
                 accountRow = accountService.queryByAccount(account);
             }
@@ -74,14 +74,10 @@ public class AccountDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(JsonTools.toJSONString(ConstantCode.DB_EXCEPTION));
         }
 
-        log.warn("1🐕");
         // add role
         List<GrantedAuthority> list = new ArrayList<GrantedAuthority>();
         list.add(new SimpleGrantedAuthority("ROLE_" + accountRow.getRoleName()));
         User authUser = new User(account, accountRow.getAccountPwd(), list);
-        log.warn("1🐕authUser："+authUser.getUsername());
-        log.warn("2🐕authUser："+authUser.getPassword());
-        log.warn("3🐕authUser："+authUser.getAuthorities().toString());
         return authUser;
     }
 }

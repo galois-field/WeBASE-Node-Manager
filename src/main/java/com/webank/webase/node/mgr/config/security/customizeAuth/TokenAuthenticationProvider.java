@@ -47,7 +47,6 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         String token = authentication.getName();
-        log.warn("🐕token"+token);
         String account = null;
         String accessToken = null;
         Integer code = 0;
@@ -60,7 +59,6 @@ public class TokenAuthenticationProvider implements AuthenticationProvider {
                 tokenService.deleteToken(token, null);
                 throw new NodeMgrException(ConstantCode.INVALID_ACCESS_TOKEN);
             }
-            log.warn("🐕account"+account);
             tokenService.updateExpireTime(token);
         }catch (NodeMgrException e){
             if (e.getRetCode().getCode() == ConstantCode.INVALID_ACCESS_TOKEN.getCode()){

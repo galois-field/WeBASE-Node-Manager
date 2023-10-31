@@ -43,12 +43,6 @@ public class AccountFilter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
             Object handler) throws Exception {
 
-
-//        if (request.getRequestURI().equals("/WeBASE-Node-Manager/error")){
-            log.warn("🐕uri"+request.getRequestURI());
-//            return true;
-//        }
-
         // 获取账户信息
         String account = accountService.getCurrentAccount(request);
         TbAccountInfo accountRow = accountService.queryByAccount(account);
