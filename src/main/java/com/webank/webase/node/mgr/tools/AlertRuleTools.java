@@ -39,7 +39,7 @@ public class AlertRuleTools {
     public static final String ABNORMAL_USER_AND_CONTRACT_EXCEED_ALERT = "";
 
     // alert mail title
-    public static final String ALERT_TITLE_PREFIX = "WeBASE-Node-Manager ";
+    public static final String ALERT_TITLE_PREFIX = "节点管理服务 ";
 
     public static final String ALERT_TITLE_NODE = "节点异常告警";
     public static final String ALERT_TITLE_AUDIT = "审计异常告警";

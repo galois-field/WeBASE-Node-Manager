@@ -20,7 +20,7 @@ package com.webank.webase.node.mgr.base.code;
  * 1:system exception <br/>
  * 2:business exception <br/>
  * B:project number <br/>
- * WeBASE-Node-Manager:02 <br/>
+ * Node-Manager:02 <br/>
  * C: error code <br/>
  */
 public class ConstantCode {
@@ -33,7 +33,7 @@ public class ConstantCode {
     public static final RetCode SYSTEM_EXCEPTION_GET_PRIVATE_KEY_FAIL = RetCode.mark(102001, "system exception: please check front");
     public static final RetCode SYSTEM_ERROR_GROUP_LIST_EMPTY = RetCode.mark(102002, "No group belongs to this groupId(node not belongs to this group)");
     public static final RetCode WEBASE_VERSION_NOT_MATCH_FISCO_SUPPORT_VERSION = RetCode.mark(102003, "When webase is v1.3.2 above(inclusive), fisco-bcos node must be v2.4.1 above(inclusive)!");
-    public static final RetCode CREATE_CHECK_CODE_FAIL = RetCode.mark(102004, "Create check code fail, please check the log of WeBASE-Node-Manager for details");
+    public static final RetCode CREATE_CHECK_CODE_FAIL = RetCode.mark(102004, "Create check code fail, please check the log of Node-Manager for details");
 
     /**
      * Business exception.
@@ -255,7 +255,7 @@ public class ConstantCode {
     public static final RetCode WEBASE_SIGN_NOT_LOCALHOST_ERROR = RetCode.mark(202465, "webaseSignAddress cannot be 127.0.0.1 or localhost in application.yml file");
     public static final RetCode IMAGE_NOT_EXISTS_ON_HOST = RetCode.mark(202466, "Image not exists on host.");
     public static final RetCode NODES_NUM_EXCEED_MAX_ERROR = RetCode.mark(202467, "Max 4 nodes on a same host.");
-    public static final RetCode SAME_HOST_ERROR = RetCode.mark(202468, "Host of WeBASE-Node-Manager's ip is already existed.");
+    public static final RetCode SAME_HOST_ERROR = RetCode.mark(202468, "Host of Node-Manager's ip is already existed.");
     // add in 1.4.3
     public static final RetCode EXEC_DOCKER_CHECK_SCRIPT_ERROR = RetCode.mark(202469, "Check docker installed and running of host");
     public static final RetCode EXEC_HOST_CHECK_SCRIPT_ERROR_FOR_MEM = RetCode.mark(202470, "Check host memory not enough for nodes(s)");

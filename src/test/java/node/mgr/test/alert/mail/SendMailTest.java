@@ -52,7 +52,7 @@ public class SendMailTest extends TestBase {
     @Autowired
     AuditMonitorTask auditMonitorTask;
 
-    public static final String testTitle = "WeBase-Node-Manager测试邮件，请勿回复";
+    public static final String testTitle = "节点管理服务测试邮件，请勿回复";
     public static final String fromMailAddress = "yourmail@163.com"; 
     public static final String toMailAddress = "yourmail@163.com"; 
     public static final String testContent = "【这是节点管理的测试邮件，请勿回复】";
@@ -67,7 +67,7 @@ public class SendMailTest extends TestBase {
     @Test
     public void testSendingByRule() {
         // make sure mail server config is enabled, userList is not empty
-        mailService.sendMailByRule(3, "WeBASE-Node-Manager in Test");
+        mailService.sendMailByRule(3, "Node-Manager in Test");
     }
 
     /**

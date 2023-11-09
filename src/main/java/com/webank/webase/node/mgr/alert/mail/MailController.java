@@ -53,7 +53,7 @@ public class MailController {
     @Autowired
     TemplateEngine templateEngine;
 
-    public static final String testTitle = "WeBase-Node-Manager测试邮件，请勿回复";
+    public static final String testTitle = "节点管理服务测试邮件，请勿回复";
 
 
     /**
