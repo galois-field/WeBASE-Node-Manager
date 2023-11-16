@@ -144,3 +144,6 @@ scheduler:
   awaitTerminationSeconds: 600
   waitForTasksToCompleteOnShutdown: true
 
+
+accessTokenUrl: "http://122.190.56.35:31575/ns-design/oauth2/query_access_token"
+

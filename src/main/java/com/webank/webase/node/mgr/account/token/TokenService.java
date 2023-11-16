@@ -26,6 +26,7 @@ import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.core.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -112,13 +113,16 @@ public class TokenService {
         return tbToken.getAccessToken();
     }
 
+    @Value("${accessTokenUrl}")
+    public  String accessTokenUrl;
+
     /**
      *  verify code by qing hai
      */
     public boolean verifyCodeByQH(String accessToken) throws Exception {
 
         // 请求校验Token地址
-        String accessTokenUrl = "http://122.190.56.35:31575/ns-design/oauth2/query_access_token";
+        //String accessTokenUrl = "http://122.190.56.35:31575/ns-design/oauth2/query_access_token";
         // 拼接请求地址
         String fullUrl = accessTokenUrl + "?access_token=" + accessToken;
 
