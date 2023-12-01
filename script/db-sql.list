@@ -1,0 +1,2 @@
+\i db-ddl.sql;
+\i db-dml.sql;

@@ -21,7 +21,7 @@ DBNAME="wm"
 
 
 #connect to database then execute init
-cat webase-sql.list | psql -U $DBUSER -W -h $IP -d $DBNAME -p $PORT -a --set=client_encoding=utf8;
+cat db-sql.list | psql -U $DBUSER -W -h $IP -d $DBNAME -p $PORT -a --set=client_encoding=utf8;
 
 if [ "$?" == "0" ]; then
     echo -e "init success... \n"
