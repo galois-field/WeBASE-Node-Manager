@@ -2,7 +2,7 @@
 -- 1、init tb_account_info data   admin/Abcd1234
 -- ----------------------------
 INSERT INTO tb_account_info (account, account_pwd, role_id, create_time, modify_time)
-values ('admin20231201', '$2a$10$F/aEB1iEx/FvVh0fMn6L/uyy.PkpTy8Kd9EdbqLGo7Bw7eCivpq.m', 100000, now(), now());
+values ('admin202312', '$2a$10$bQTQzXNoiBPjdslM1ysfT.Cauv43oSmvTyfbnnWrUZhyh0RmxcJsW', 100000, now(), now());
 
 
 
