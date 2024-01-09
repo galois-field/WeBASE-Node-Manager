@@ -2,7 +2,7 @@
 -- 1、init tb_account_info data   admin/Abcd1234
 -- ----------------------------
 INSERT INTO tb_account_info (account, account_pwd, role_id, create_time, modify_time)
-values ('admin202312', '$2a$10$bQTQzXNoiBPjdslM1ysfT.Cauv43oSmvTyfbnnWrUZhyh0RmxcJsW', 100000, now(), now());
+values ('IPKSecretKey', '$2a$10$OiweL4/GRKFSXbXOw6yrBelKxfGWZpWIJ4/rBGvxzRSKV0wDI4mYC', 100000, now(), now());
 
 
 
